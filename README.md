@@ -1,8 +1,8 @@
 # pingpong
  pingpong lab
 
-In Development
-Left off at developing controllers in code.py
+In Development:
+- Left off at developing controllers in code.py
 
 Runs pingpong.tsd_profile_characteristics() at startup for testing purposes.
 Test not completed; would be logged from teraterm and graphed in matlab to find correlation of pwm_to_motor : adc_from_sensor.
