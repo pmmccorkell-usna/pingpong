@@ -1,3 +1,9 @@
+# Patrick McCorkell
+# April 2022
+# US Naval Academy
+# Robotics and Control TSD
+#
+
 import board
 from time import sleep
 from digitalio import DigitalInOut, Direction
@@ -53,23 +59,30 @@ class Pingpong():
 		sleep(interval)
 		self.mosfet_digital.value = 0
 
-	def tsd_profile_characteristics(self,freq=50,delay_time=0.5):
-		self.set_pwm_freq(freq)
+	def tsd_iterate_up(self,delay_time):
 		for i in range(65535):
 			self.set_pwm(i/65535)
 			sleep(delay_time)
-			print(f'%0.3f, %0.3f' %(i/65535, self.sensor.value/65535))
-	
+			print(f'%0.6f, %0.3f' %(i/65535, self.sensor.value/65535))
+
+	def tsd_iterate_down(self,delay_time):
+		for i in range(65535):
+			j = 65535 - i
+			self.set_pwm(j/65535)
+			sleep(delay_time)
+			print(f'%0.6f, %0.3f' %((j/65535), self.sensor.value/65535))
+
+	def tsd_profile_characteristics(self,freq=50,delay_time=0.5):
+		self.set_pwm_freq(freq)
+
+		self.tsd_iterate_up(delay_time)
 
 		for _ in range(10):
 			self.set_pwm()
 			print('NEW TEST')
 			sleep(0.1)
+		self.tsd_iterate_down(delay_time)
 
-		for i in range(65535):
-			self.set_pwm((65535-i)/65535)
-			sleep(delay_time)
-			print(f'%0.3f, %0.3f' %((65535-i/65535), self.sensor.value/65535))
 		for _ in range(10):
 			print('END TEST')
 			self.set_pwm()

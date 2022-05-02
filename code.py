@@ -1,3 +1,10 @@
+# Patrick McCorkell
+# April 2022
+# US Naval Academy
+# Robotics and Control TSD
+#
+
+
 print("Hello " + __name__)
 
 from music import Music
@@ -108,6 +115,7 @@ def reset():
 	import microcontroller
 	microcontroller.reset()
 
+intro = 0
 def exit_program():
 	if (str(type(intro))=="<class 'Music'>" ):
 		intro.deinit_all()
@@ -128,7 +136,6 @@ if __name__ == '__main__':
 	lab.tsd_profile_characteristics()
 	# c = Music()
 
-intro = 0
 if __name__ == 'code':
 	intro = Music(pass_pwm=lab.mosfet,auto=True)
 	lab.tsd_profile_characteristics()

@@ -1,3 +1,9 @@
+# Patrick McCorkell
+# April 2022
+# US Naval Academy
+# Robotics and Control TSD
+#
+
 import board
 from time import sleep
 import pwmio

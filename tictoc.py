@@ -1,3 +1,9 @@
+# Patrick McCorkell
+# January 2022
+# US Naval Academy
+# Robotics and Control TSD
+#
+
 from time import monotonic_ns
 
 ###################################
