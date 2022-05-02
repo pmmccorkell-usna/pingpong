@@ -4,9 +4,9 @@
 # Robotics and Control TSD
 #
 
-import board
-from time import sleep
-import pwmio
+import board			# to get GPIO
+from time import sleep	# for timing
+import pwmio			# PWM
 # from ticker import Interrupt_Controller
 
 
@@ -17,9 +17,9 @@ class Music():
 		else:
 			self.pwm_out = pass_pwm
 
-		self.bpm = pass_bpm	# bpm / 60 seconds -> beats per second
-		self.update_time = 1 / (self.bpm / 120 * 64)	# 64 resolution within 1 beat
-											# 1/4 note = 64 
+		self.bpm = pass_bpm
+		# self.update_time = 1 / (self.bpm / 120 * 64)	# 64 resolution within 1 beat
+		# 									# 1/4 note = 64 
 
 		self.init_note_lookup()
 
@@ -40,7 +40,7 @@ class Music():
 		]
 
 
-
+	# Translate music signature (ie 4/4) and bpm (ie 120) to units the microcontroller can use.
 	def translate_note_time(self,notes_in):
 		notes_out = []
 		for note in notes_in:
@@ -58,6 +58,9 @@ class Music():
 			# print(note)	
 			self.set_note(note[0])
 			sleep(note[1]-0.05)
+
+			# My lazy attempt to simulate glottal stop on a brass instrument.
+			# May cause a crash if time signature and note length results in a note length of under 50ms.
 			self.off_note()
 			sleep(0.05)
 

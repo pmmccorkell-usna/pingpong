@@ -4,13 +4,17 @@
 # Robotics and Control TSD
 #
 
-
+# What context is code.py being executed from?
+# 	default startup is '__main__'
+#	REPL is 'code'
+#	If imported from another script, will display that higher script.
 print("Hello " + __name__)
 
-from music import Music
-from pingpong import Pingpong
-import atexit
+from music import Music		# Priorities.
+from pingpong import Pingpong	# Class for the lab environment
+import atexit		# For error handling.
 
+# Class for the lab environment.
 lab = Pingpong()
 
 
@@ -111,19 +115,35 @@ lab = Pingpong()
 ########## Exit Section ###########
 ###################################
 
+# Self-explanatory
 def reset():
 	import microcontroller
 	microcontroller.reset()
 
+# Instantiate 'intro' as an integer, so that we can later check if it's been
+#	reassigned to the class Music.
 intro = 0
-def exit_program():
+def exit_program(reason='None'):
+	# Display the function exit_program was called from.
+	print('exit_program called from ' + str(reason))
+
+	# Check if the Music class has been called,
+	#	and if so deinit its objects.
 	if (str(type(intro))=="<class 'Music'>" ):
 		intro.deinit_all()
+
+	# Turn the mosfet off before deinit all the objects.
 	lab.set_pwm(0)
+
+	# Deinit all the pin assignments from each Class.
 	lab.deinit_all()
+
+	# If Matlab interface is implemented, inform Matlab that the program quit.
 	# print('LOG: exiting program')
 
-atexit.register(exit_program)
+# Causes the registered function() to be called if the program fails for any reason,
+#	or the program naturally comes to a logical conclusion.
+atexit.register(exit_program,'atexit')
 
 
 
