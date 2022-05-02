@@ -57,10 +57,10 @@ class Music():
 		for note in music_list:
 			# print(note)	
 			self.set_note(note[0])
-			sleep(note[1]-0.05)
 
 			# My lazy attempt to simulate glottal stop on a brass instrument.
-			# May cause a crash if time signature and note length results in a note length of under 50ms.
+			# May cause a crash if time signature and note type results in a note duration of under 50ms.
+			sleep(note[1]-0.05)
 			self.off_note()
 			sleep(0.05)
 
