@@ -133,8 +133,8 @@ atexit.register(exit_program)
 ###################################
 
 if __name__ == '__main__':
+	intro = Music(pass_pwm=lab.mosfet,auto=True)
 	lab.tsd_profile_characteristics()
-	# c = Music()
 
 if __name__ == 'code':
 	intro = Music(pass_pwm=lab.mosfet,auto=True)

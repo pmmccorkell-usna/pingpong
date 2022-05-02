@@ -50,8 +50,8 @@ class Music():
 
 	def play_music(self,music_in=None):
 		if not music_in:
-			music_in = self.test_tone
-			# music_in = self.empire
+			# music_in = self.test_tone
+			music_in = self.empire
 		music_list = self.translate_note_time(music_in)
 		# print(music_list)
 		for note in music_list:
