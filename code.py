@@ -153,6 +153,7 @@ atexit.register(exit_program,'atexit')
 ###################################
 
 if __name__ == '__main__':
+	print("running from main")
 	intro = Music(pass_pwm=lab.mosfet,auto=True)
 	lab.tsd_profile_characteristics()
 

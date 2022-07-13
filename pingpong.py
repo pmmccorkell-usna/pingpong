@@ -9,17 +9,20 @@ from time import sleep
 from digitalio import DigitalInOut, Direction
 import pwmio
 import analogio
-
+from sbc import SBC
 
 class Pingpong():
 	def __init__(self):
 		self.mosfet = self.init_mosfet_pwm()
 		# self.pwm_sanity()
-		self.sensor = self.init_sensor()
+		self.sensor_board = self.init_sbc()
+		self.sensor = self.sensor_board._adc_device
+		self.sensor.default_channel = 7
 
 		self.deinit_repository = [
+			self.sensor_board,
 			self.mosfet,
-			self.sensor
+			# self.sensor
 		]
 
 
@@ -60,28 +63,51 @@ class Pingpong():
 		self.mosfet_digital.value = 0
 
 	def tsd_iterate_up(self,delay_time):
-		for i in range(65535):
-			self.set_pwm(i/65535)
+		for i in range(512):
+			self.set_pwm(i/512)
 			sleep(delay_time)
-			print(f'%0.6f, %0.3f' %(i/65535, self.sensor.value/65535))
+			print(f'%0.6f, %0.3f' %(i/512, self.sensor.value))
+			# print(f'%0.6f, %0.3f' %(i/512, 3.3 * self.sensor.value/65535))
+
 
 	def tsd_iterate_down(self,delay_time):
-		for i in range(65535):
-			j = 65535 - i
-			self.set_pwm(j/65535)
+		for i in range(512):
+			j = 512 - i
+			self.set_pwm(j/1024)
 			sleep(delay_time)
-			print(f'%0.6f, %0.3f' %((j/65535), self.sensor.value/65535))
+			print(f'%0.6f, %0.3f' %((j/1024), self.sensor.value))
+			# print(f'%0.6f, %0.3f' %((j/1024), 3.3 * self.sensor.value/65535))
 
 	def tsd_profile_characteristics(self,freq=50,delay_time=0.5):
+		print("tsd_profile_characteristics")
 		self.set_pwm_freq(freq)
 
-		self.tsd_iterate_up(delay_time)
+		self.set_pwm(1)
+		sleep(delay_time*3)
+		print(f'%0.6f, %0.3f' %((65536/65536), self.sensor.value))
+		# print(f'%0.6f, %0.3f' %((65536/65536), 3.3 * self.sensor.value/65535))
+		# self.tsd_iterate_up(delay_time)
 
-		for _ in range(10):
-			self.set_pwm()
-			print('NEW TEST')
-			sleep(0.1)
-		self.tsd_iterate_down(delay_time)
+		# for _ in range(10):
+		# 	self.set_pwm()
+		# 	print('NEW TEST')
+		# 	sleep(0.1)
+		# self.tsd_iterate_down(delay_time)
+
+		# for i in range(275,450):
+		# 	self.set_pwm(0.5)
+		# 	sleep(2)
+		# 	self.set_pwm(i/1024)
+		# 	print(f'%0.6f, %0.3f' %((i/1024), 3.3 * self.sensor.value/65535))
+		# 	sleep(5)
+
+		# for i in range(18000/16,65536/16):  #28500):
+		for i in range(270,750):  #28500):
+			self.set_pwm(i/1000)
+			print(f'%0.6f, %0.3f' %((i/1000), self.sensor.value))
+			# print(f'%0.6f, %0.3f' %((i/65536), 3.3 * self.sensor.value/65535))
+			sleep(2)
+
 
 		for _ in range(10):
 			print('END TEST')
@@ -95,19 +121,25 @@ class Pingpong():
 	###################################
 
 	def init_mosfet_pwm(self):
-		p22_pwm = pwmio.PWMOut(pin = board.GP22, frequency = 400, variable_frequency = True)
-		p22_pwm.duty_cycle = 0
-		return p22_pwm
+		p26_pwm = pwmio.PWMOut(pin = board.GP5, frequency = 400, variable_frequency = True)
+		p26_pwm.duty_cycle = 0
+		return p26_pwm
 
 	def init_mosfet_digital(self):
-		p22 = DigitalInOut(board.GP22)
-		p22.direction = Direction.OUTPUT
-		p22.value = 0
-		return p22
+		p26 = DigitalInOut(board.GP5)
+		p26.direction = Direction.OUTPUT
+		p26.value = 0
+		return p26
 
-	def init_sensor(self):
-		p28 = analogio.AnalogIn(board.GP28)
-		return p28
+	def init_sbc(self):
+		return SBC()
+
+	# def init_sensor(self):
+	# 	# sensor = analogio.AnalogIn(board.GP27)
+	# 	sensor = self.sensor_board.read_adc()
+	# 	print(f"pingpong init_sensor")
+	# 	sensor.default_channel = 7
+	# 	return sensor
 
 	# It's very likely this function can be called more than once depending on the quit conditions and where it was executed from.
 	# Therefore, try/except each deinit action. I don't care to see the error messages, I know it was previously deinit'd.
