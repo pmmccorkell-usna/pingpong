@@ -8,8 +8,9 @@ import board
 from time import sleep
 from digitalio import DigitalInOut, Direction
 import pwmio
-import analogio
+# import analogio
 from sbc import SBC
+from music import Music
 
 class Pingpong():
 	def __init__(self):
@@ -19,12 +20,30 @@ class Pingpong():
 		self.sensor = self.sensor_board._adc_device
 		self.sensor.default_channel = 7
 
+		self.intro = Music(pass_pwm=self.mosfet,auto=False)
+		self.play_random_music(-1,600,0.5)
+
 		self.deinit_repository = [
 			self.sensor_board,
 			self.mosfet,
+			self.intro,
 			# self.sensor
 		]
 
+
+	def play_random_music(self,times_to_play=1,wait_time_between=1,effort=0.3):
+		# Display sucks up so much processing power that it delays music timing
+		self.sensor_board.clear_display()
+
+		# while(times):
+		# 	sleep(10)
+		self.intro.play_random(times_to_play,wait_time_between,effort)
+			# times-=1
+
+		self.set_pwm_freq()
+
+		# Bring back that display.
+		self.sensor_board._init_display()
 
 
 	###################################
@@ -80,11 +99,7 @@ class Pingpong():
 
 	def tsd_profile_characteristics(self,freq=50,delay_time=0.5):
 		print("tsd_profile_characteristics")
-		self.set_pwm_freq(freq)
 
-		self.set_pwm(1)
-		sleep(delay_time*3)
-		print(f'%0.6f, %0.3f' %((65536/65536), self.sensor.value))
 		# print(f'%0.6f, %0.3f' %((65536/65536), 3.3 * self.sensor.value/65535))
 		# self.tsd_iterate_up(delay_time)
 
@@ -102,11 +117,25 @@ class Pingpong():
 		# 	sleep(5)
 
 		# for i in range(18000/16,65536/16):  #28500):
-		for i in range(270,750):  #28500):
-			self.set_pwm(i/1000)
-			print(f'%0.6f, %0.3f' %((i/1000), self.sensor.value))
-			# print(f'%0.6f, %0.3f' %((i/65536), 3.3 * self.sensor.value/65535))
-			sleep(2)
+		# for i in range(270,750):  #28500):
+		start = .15
+		stop = .5
+		resolution = 512
+		while(1):
+			self.set_pwm_freq(freq)
+
+			# self.set_pwm(1)
+			self.set_pwm(0.5)
+
+			sleep(delay_time*3)
+			print(f'%0.3f, %0.6f' %((65536/65536), self.sensor.value))
+
+			for i in range(int(start*resolution),int(stop*resolution)):
+				self.set_pwm(i/resolution)
+				print(f'%0.6f, %0.3f' %((i/resolution), self.sensor.volts))
+				# print(f'%0.3f, %0.4f' %((i/65536), 3.3 * self.sensor.value/65535))
+				sleep(0.125)
+			self.play_random()
 
 
 		for _ in range(10):

@@ -10,7 +10,6 @@
 #	If imported from another script, will display that higher script.
 print("Hello " + __name__)
 
-from music import Music		# Priorities.
 from pingpong import Pingpong	# Class for the lab environment
 import atexit		# For error handling.
 
@@ -130,7 +129,7 @@ def exit_program(reason='None'):
 	# Check if the Music class has been called,
 	#	and if so deinit its objects.
 	if (str(type(intro))=="<class 'Music'>" ):
-		intro.deinit_all()
+		intro.deinit()
 
 	# Turn the mosfet off before deinit all the objects.
 	lab.set_pwm(0)
@@ -154,9 +153,9 @@ atexit.register(exit_program,'atexit')
 
 if __name__ == '__main__':
 	print("running from main")
-	intro = Music(pass_pwm=lab.mosfet,auto=True)
+	# intro = Music(pass_pwm=lab.mosfet,auto=True)
 	lab.tsd_profile_characteristics()
 
 if __name__ == 'code':
-	intro = Music(pass_pwm=lab.mosfet,auto=True)
+	# intro = Music(pass_pwm=lab.mosfet,auto=True)
 	lab.tsd_profile_characteristics()
