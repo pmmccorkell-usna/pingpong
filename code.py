@@ -17,6 +17,41 @@ import atexit		# For error handling.
 lab = Pingpong()
 
 
+###################################
+######## Reset and Program ########
+########## Exit Section ###########
+###################################
+
+# Self-explanatory
+def reset():
+	import microcontroller
+	microcontroller.reset()
+
+# Instantiate 'intro' as an integer, so that we can later check if it's been
+#	reassigned to the class Music.
+intro = 0
+def exit_program(reason='None'):
+	# Display the function exit_program was called from.
+	print('exit_program called from ' + str(reason))
+
+	# Check if the Music class has been called,
+	#	and if so deinit its objects.
+	# if (str(type(intro))=="<class 'Music'>" ):
+	# 	intro.deinit()
+
+	# Turn the mosfet off before deinit all the objects.
+	lab.set_pwm(0)
+
+	# Deinit all the pin assignments from each Class.
+	lab.deinit()
+
+	# If Matlab interface is implemented, inform Matlab that the program quit.
+	# print('LOG: exiting program')
+
+# Causes the registered function() to be called if the program fails for any reason,
+#	or the program naturally comes to a logical conclusion.
+atexit.register(exit_program)
+print('atexit registered')
 
 ###################################
 ########## Notes to Self ##########
@@ -109,40 +144,6 @@ lab = Pingpong()
 
 
 
-###################################
-######## Reset and Program ########
-########## Exit Section ###########
-###################################
-
-# Self-explanatory
-def reset():
-	import microcontroller
-	microcontroller.reset()
-
-# Instantiate 'intro' as an integer, so that we can later check if it's been
-#	reassigned to the class Music.
-intro = 0
-def exit_program(reason='None'):
-	# Display the function exit_program was called from.
-	print('exit_program called from ' + str(reason))
-
-	# Check if the Music class has been called,
-	#	and if so deinit its objects.
-	if (str(type(intro))=="<class 'Music'>" ):
-		intro.deinit()
-
-	# Turn the mosfet off before deinit all the objects.
-	lab.set_pwm(0)
-
-	# Deinit all the pin assignments from each Class.
-	lab.deinit_all()
-
-	# If Matlab interface is implemented, inform Matlab that the program quit.
-	# print('LOG: exiting program')
-
-# Causes the registered function() to be called if the program fails for any reason,
-#	or the program naturally comes to a logical conclusion.
-atexit.register(exit_program,'atexit')
 
 
 
@@ -153,9 +154,9 @@ atexit.register(exit_program,'atexit')
 
 if __name__ == '__main__':
 	print("running from main")
-	# intro = Music(pass_pwm=lab.mosfet,auto=True)
-	lab.tsd_profile_characteristics()
+	# lab.tsd_profile_characteristics()
+	lab.play_random_music(-1,600,0.5)
+
 
 if __name__ == 'code':
-	# intro = Music(pass_pwm=lab.mosfet,auto=True)
 	lab.tsd_profile_characteristics()

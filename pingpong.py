@@ -21,7 +21,6 @@ class Pingpong():
 		self.sensor.default_channel = 7
 
 		self.intro = Music(pass_pwm=self.mosfet,auto=False)
-		self.play_random_music(-1,600,0.5)
 
 		self.deinit_repository = [
 			self.sensor_board,
@@ -32,18 +31,8 @@ class Pingpong():
 
 
 	def play_random_music(self,times_to_play=1,wait_time_between=1,effort=0.3):
-		# Display sucks up so much processing power that it delays music timing
-		self.sensor_board.clear_display()
-
-		# while(times):
-		# 	sleep(10)
 		self.intro.play_random(times_to_play,wait_time_between,effort)
-			# times-=1
-
 		self.set_pwm_freq()
-
-		# Bring back that display.
-		self.sensor_board._init_display()
 
 
 	###################################
@@ -172,16 +161,21 @@ class Pingpong():
 
 	# It's very likely this function can be called more than once depending on the quit conditions and where it was executed from.
 	# Therefore, try/except each deinit action. I don't care to see the error messages, I know it was previously deinit'd.
-	def deinit_all(self):
+	def deinit(self):
 		for _ in range(3):
 			self.set_pwm(0)
 			sleep(0.2)
 
 		for obj in self.deinit_repository:
-			# print('deinitializing' + str(obj))
+			print('deinitializing' + str(obj))
 			try:
+				obj_type = type(obj)
 				obj.deinit()
-			except:
-				pass
+				print('deinitialized %s of type %s.' %(obj,obj_type))
+			except Exception as e:
+				print(obj)
+				print(e)
+				print('FAILED deinitialized %s of type %s.' %(obj,obj_type))
+				pass 
 
 
