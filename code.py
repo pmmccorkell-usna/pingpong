@@ -34,11 +34,6 @@ def exit_program(reason='None'):
 	# Display the function exit_program was called from.
 	print('exit_program called from ' + str(reason))
 
-	# Check if the Music class has been called,
-	#	and if so deinit its objects.
-	# if (str(type(intro))=="<class 'Music'>" ):
-	# 	intro.deinit()
-
 	# Turn the mosfet off before deinit all the objects.
 	lab.set_pwm(0)
 
@@ -51,7 +46,6 @@ def exit_program(reason='None'):
 # Causes the registered function() to be called if the program fails for any reason,
 #	or the program naturally comes to a logical conclusion.
 atexit.register(exit_program)
-print('atexit registered')
 
 ###################################
 ########## Notes to Self ##########
@@ -61,9 +55,6 @@ print('atexit registered')
 # sensor		21888	at bottom
 
 # pwm		0.266	when it can maintain a current (~ 50 mA)
-
-
-
 
 
 
