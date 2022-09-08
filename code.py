@@ -145,8 +145,8 @@ atexit.register(exit_program)
 
 if __name__ == '__main__':
 	print("running from main")
-	# lab.tsd_profile_characteristics()
-	lab.play_random_music(-1,600,0.5)
+	lab.tsd_profile_characteristics()
+	# lab.play_random_music(-1,600,0.5)
 
 
 if __name__ == 'code':

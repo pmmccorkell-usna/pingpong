@@ -107,9 +107,9 @@ class Pingpong():
 
 		# for i in range(18000/16,65536/16):  #28500):
 		# for i in range(270,750):  #28500):
-		start = .15
-		stop = .5
-		resolution = 512
+		start = .3
+		stop = .9
+		resolution = 1024
 		while(1):
 			self.set_pwm_freq(freq)
 
@@ -124,7 +124,7 @@ class Pingpong():
 				print(f'%0.6f, %0.3f' %((i/resolution), self.sensor.volts))
 				# print(f'%0.3f, %0.4f' %((i/65536), 3.3 * self.sensor.value/65535))
 				sleep(0.125)
-			self.play_random()
+			# self.play_random_music()
 
 
 		for _ in range(10):
@@ -139,9 +139,9 @@ class Pingpong():
 	###################################
 
 	def init_mosfet_pwm(self):
-		p26_pwm = pwmio.PWMOut(pin = board.GP5, frequency = 400, variable_frequency = True)
-		p26_pwm.duty_cycle = 0
-		return p26_pwm
+		p_pwm = pwmio.PWMOut(pin = board.GP12, frequency = 400, variable_frequency = True)
+		p_pwm.duty_cycle = 0
+		return p_pwm
 
 	def init_mosfet_digital(self):
 		p26 = DigitalInOut(board.GP5)
