@@ -64,6 +64,12 @@ class Music():
 		# print(notes_out)
 		return notes_out
 
+	# 'effort' is pwm duty cycle, normalized to [0,1]
+	#	Higher efforts will cause the motor to actively spin and not play audible tones.
+	#	Ideally, need enough pwm to "ring" but remain in motor stall condition.
+	#	This needs to be matched against the Voltage being fed to the motor. More voltage across motor leads --> less effort.
+	#	If the effort is too far away from 0.5, it may also be washed out by the mosfet delays and lose the frequency fidelity for some notes.
+	#		Generally, [0.3,0.8] are acceptable for this purpose, but again: need to be matched against the Voltage.
 	def play_music(self,score=[],effort=0.3):
 		# If there's a score, use it. Otherwise play test tone by default.
 		if score:
@@ -86,7 +92,7 @@ class Music():
 		# Derive the glottal stop after updating bpm.
 		glottal_stop_time = self.set_glottal_stop()
 
-		# Transform note lengths (ie quarter note, eight note, etc.) into actual times per beats per minute.
+		# Transform note lengths (ie quarter note, eight note, etc.) into actual times related to "beats per minute".
 		music_list = self.translate_note_time(music_in)
 
 		# Iterate through the notes and play each note.
@@ -144,7 +150,7 @@ class Music():
 				('G5',1/4),('G4',3/16),('G4',1/16),('G5',1/4),('F#5',3/16),('F5',1/16),('E5',1/16),('D#5',1/16),('E5',1/8),('silence',1/8),('G#4',1/8),('C#5',1/4),('B#4',3/16),('B4',1/16),('A#4',1/16),('A4',1/16),('A#4',1/8),('silence',1/8),('D#4',1/8),('F#4',1/4),('D#4',3/16),('F#4',1/16),('A#4',1/4),('G4',3/16),('A#4',1/16),('D5',1/2),('G5',1/4),('G4',3/16),('G4',1/16),('G5',1/4),('F#5',3/16),('F5',1/16),('E5',1/16),('D#5',1/16),('E5',1/8),('silence',1/8),('G4',1/8),('C#5',1/4),('B#4',3/16),('B4',1/16),('A#4',1/16),('A4',1/16),('A#4',1/8),('silence',1/8),('D#4',1/8),('F#4',1/4),('D#4',3/16),('A#4',1/16),('G4',1/4),('D#4',3/16),('A#4',1/16),('G4',1/2)
 			],
 			120, # bpm
-			["The Imperial March (extended)","John Williams"]
+			["The Imperial March (extended intro)","John Williams"]
 		]
 
 		# https://www.musicnotes.com/sheetmusic/mtd.asp?ppn=MN0245391
@@ -162,13 +168,13 @@ class Music():
 				('Bb4',1/8),('Eb5',1/8),('silence',1/4),('silence',1/8),('Bb4',1/8),('G5',3/16),('F5',1/16),('Eb5',1/8),('C5',1/8),('silence',1/4),('silence',1/2),('F5',1/8),('F5',1/4),('Eb5',1/8),('D5',3/16),('Eb5',1/16),('D5',1/8),('C5',1/8),('Bb4',1/8),('G4',1/8),('silence',1/4),('silence',1/8),('G4',1/8),('Ab4',1/8),('A4',1/8),('Bb4',1/8),('Eb5',1/8),('silence',1/4),('silence',1/8),('Bb4',1/8),('G5',3/16),('F5',1/16),('Eb5',1/8),('C5',1/8),('silence',1/4),('silence',1/2),('F5',1/8),('F5',1/4),('Eb5',1/8),('D5',1/8),('Bb4',1/4),('F5',1/8),('Eb5',3/4)
 			], #1)],
 			160,		# bpm
-			["The Great Escape", "Elmber Bernstein"]
+			["The Great Escape", "Elmer Bernstein"]
 		]
 
 		self.honey = [
 			[
-				('D4', 1/8),('G4', 1/8),('silence', 1/2),('silence', 1/8),('D4',1/8),('Bb4',1/8),('D5',1/8),('silence', 1/2),('silence', 1/8),('D4',1/8),('D5',1/8),('E5',1/8),('F5',7/8),('G5',1/8),('E5',1/8),('D5',1/8),('C5',1/8),('silence',1/4),('G4',1/8),('D4',1/8),('G4',1/8),('silence', 1/2),('silence', 1/8),('D4',1/8),('G4',1/8),('D5',1/8),('silence', 1/2),('silence', 1/8),('D4',1/8),('D5',1/8,),('E5',1/8),('F5',7/8),('G5',1/8),('E5',1/8),('D5',1/8),('C5',1/8),('silence',1/4),('C5',1/8),('D5',1/8),('F5',1/8),('G5',1/8),('F5',1/8),('G5',7/4),('silence', 1/8),('F5',3/8),('D5',1/4),('silence',1/4),('silence', 1/8),('C5',3/8),('A4',1/4),('silence',1/4),('silence',1/2),('G4',3/8),('G4',1/8),
-				('Bb4',5/8),('silence',1/8),('C4',3/16),('F4',1/16),('silence',1/2),('silence',1/8),('C4',1/16),('F4',1/8),('C5',1/16),('silence',1/2),('silence',1/8),('F4',1/16),('C5',1/8),('D5',1/16),('Eb5',15/16),('F5',1/16),('D5',1/16),('C5',1/8),('Bb4',1/16),('silence',1/2),('C4',3/16),('F4',1/16),('silence',1/2),('silence',1/4),('C4',1/16),('F4',1/8),('C5',1/16),('silence',1/2),('silence',1/4),('F4',1/16),('C5',1/8),('D5',1/16),('Eb5',15/16),('F5',1/16),('D5',1/16),('C5',1/8),('B4',1/4),('silence',1/4),('silence',1/16),('Bb4',1/16),('C5',1/8),('Eb5',1/16),('F5',1/16),('Eb5',1/8),('F5',3/16),('C5',1/16),('D5',1/8),('C5',3/16),('Gb4',1/16),('F4',1/8),('Gb4',3/16),('silence',1/2),('silence',1/8),('Eb5',3/8),('C5',1/4)
+				('D4', 1/8),('G4', 1/8),('silence', 1/2),('silence', 1/8),('D4',1/8),('Bb4',1/8),('D5',1/8),('silence', 1/2),('silence', 1/8),('D4',1/8),('D5',1/8),('E5',1/8),('F5',7/8),('G5',1/8),('E5',1/8),('D5',1/8),('C5',1/8),('silence',1/4),('G4',1/8),('D4',1/8),('G4',1/8),('silence', 1/2),('silence', 1/8),('D4',1/8),('G4',1/8),('D5',1/8),('silence', 1/2),('silence', 1/8),('D4',1/8),('D5',1/8,),('E5',1/8),('F5',7/8),('G5',1/8),('E5',1/8),('D5',1/8),('C5',1/8),('silence',1/4),('C5',1/8),('D5',1/8),('F5',1/8),('G5',1/8),('F5',1/8),('G5',7/4),('silence', 1/8),('F5',3/8),('D5',1/4),('silence',1/4),('silence', 1/8),('C5',3/8),('A4',1/4),('silence',1/4),('silence',1/2),('G4',1/4),('G4',1/4),
+				#('Bb4',5/8),('silence',1/8),('C4',3/16),('F4',1/16),('silence',1/2),('silence',1/8),('C4',1/16),('F4',1/8),('C5',1/16),('silence',1/2),('silence',1/8),('F4',1/16),('C5',1/8),('D5',1/16),('Eb5',15/16),('F5',1/16),('D5',1/16),('C5',1/8),('Bb4',1/16),('silence',1/2),('C4',3/16),('F4',1/16),('silence',1/2),('silence',1/4),('C4',1/16),('F4',1/8),('C5',1/16),('silence',1/2),('silence',1/4),('F4',1/16),('C5',1/8),('D5',1/16),('Eb5',15/16),('F5',1/16),('D5',1/16),('C5',1/8),('B4',1/4),('silence',1/4),('silence',1/16),('Bb4',1/16),('C5',1/8),('Eb5',1/16),('F5',1/16),('Eb5',1/8),('F5',3/16),('C5',1/16),('D5',1/8),('C5',3/16),('Gb4',1/16),('F4',1/8),('Gb4',3/16),('silence',1/2),('silence',1/8),('Eb5',3/8),('C5',1/4)
 			],
 			200,	# bpm
 			["A Taste of Honey", "Herb Alpert & the Tijuana Brass"]
@@ -179,7 +185,7 @@ class Music():
 			self.empire_extended,
 			self.eva,
 			self.great_escape,
-			# self.honey
+			self.honey,
 		]
 
 
