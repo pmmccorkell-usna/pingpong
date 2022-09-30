@@ -53,6 +53,12 @@ def pid(dt,error):
 	return p_term + i_term + d_term + bias
 
 
+
+###################################
+####### Controller Section ########
+###################################
+###################################
+
 # Create a list of the controller functions.
 controller_list = {
 	'p':p,
@@ -65,6 +71,7 @@ def controller(pingpong_lab,v_target = 1.0,time_limit = 10):
 	global i_term,last_error
 
 	# Assign the controller function being used.
+	# 	If "active_loop_func" doesn't point at a valid key, it will substitute the P controller.
 	active_controller = controller_list.get(active_loop_func,p)
 
 	# Zero out memory terms for I and D.

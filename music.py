@@ -38,7 +38,7 @@ class Music():
 			self.pwm_out
 		]
 
-	def play_random(self,times=1,wait_time=1,effort=0.3):
+	def play_random(self,times=1,wait_time=1,effort=0.4):
 		while(times):
 			rando = randint(1,len(self.score_list))
 			sleep(1)
@@ -182,7 +182,7 @@ class Music():
 
 		self.score_list = [
 			self.empire,
-			self.empire_extended,
+			# self.empire_extended,
 			self.eva,
 			self.great_escape,
 			self.honey,

@@ -32,7 +32,7 @@ class Pingpong():
 
 		random_music = randint(0,99)
 		if random_music < 10:
-			self.play_random_music(1,1,0.4)
+			self.play_random_music()
 
 
 	def play_random_music(self,times_to_play=1,wait_time_between=1,effort=0.3):
