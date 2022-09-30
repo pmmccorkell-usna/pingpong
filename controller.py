@@ -1,9 +1,19 @@
 from time import sleep, monotonic_ns
 
 #
-# CHANGE THIS TO SELECT P, PI, or PID
+# CHANGE THIS TO SELECT 'p', 'pi', or 'pid'
 #
 active_loop_func = 'p'
+
+# This is the sequence of events that will happen.
+def routine(lab):
+	while(1):
+		controller(lab,v_target=1)
+		sleep(2)
+		controller(lab,v_target=2)
+		sleep(1)
+		# lab.play_random_music()
+		sleep(1)
 
 
 ###################################

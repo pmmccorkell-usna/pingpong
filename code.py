@@ -48,17 +48,12 @@ atexit.register(exit_program)
 
 if __name__ == '__main__':
 	print("running from main")
-	while(1):
-		controller(lab,v_target=1)
-		sleep(2)
-		controller(lab,v_target=2)
-		sleep(1)
-		# lab.play_random_music()
-		sleep(1)
+	routine(lab)
 	# lab.tsd_profile_characteristics()
 	# lab.play_random_music(-1,600,0.5)
 
 
 if __name__ == 'code':
+	print("running from code")
 	lab.play_random_music(-1,600,0.5)
 	# lab.tsd_profile_characteristics()
