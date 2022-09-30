@@ -74,6 +74,8 @@ def controller(pingpong_lab,v_target = 1.0,time_limit = 10):
 	# 	If "active_loop_func" doesn't point at a valid key, it will substitute the P controller.
 	active_controller = controller_list.get(active_loop_func,p)
 
+	print(f"Testing of {active_loop_func} controller. Target {v_target} Volts for {time_limit} seconds.")
+
 	# Zero out memory terms for I and D.
 	i_term = 0
 	last_error = 0
@@ -115,4 +117,7 @@ def controller(pingpong_lab,v_target = 1.0,time_limit = 10):
 
 	# After the time limit has expired, set the pwm  duty cycle to 0.
 	pingpong_lab.set_pwm(0)
+	print(f"Testing of {active_loop_func} controller complete")
+	print(f"Final error%: {error_val/v_target * 100}%.")
+	print()
 
