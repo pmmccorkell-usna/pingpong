@@ -18,16 +18,10 @@ class Music():
 			self.pwm_out = pass_pwm
 
 		self.bpm = pass_bpm
-		# self.update_time = 1 / (self.bpm / 120 * 64)	# 64 resolution within 1 beat
-		# 									# 1/4 note = 64 
 
 		self.init_note_lookup()
 
-		# self.timing = Interrupt_Controller()
-
-		# time version
 		self.test_tone = [('A4',1/16)]
-		# note/beats version
 
 		self.init_score_list()
 
