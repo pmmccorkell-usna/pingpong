@@ -11,6 +11,7 @@ import pwmio
 # import analogio
 from sbc import SBC
 from music import Music
+from random import randint
 
 class Pingpong():
 	def __init__(self):
@@ -29,7 +30,9 @@ class Pingpong():
 			# self.sensor
 		]
 
-		self.play_random_music()
+		random_music = randint(0,99)
+		if random_music < 10:
+			self.play_random_music(1,1,0.4)
 
 
 	def play_random_music(self,times_to_play=1,wait_time_between=1,effort=0.3):
@@ -37,6 +40,7 @@ class Pingpong():
 		self.set_pwm_freq()
 
 	def break_stall(self,effort=0.7,delay_time=2):
+		self.set_pwm_freq()		# Set PWM frequency to the default.
 		self.set_pwm(effort)
 		sleep(delay_time)
 		self.set_pwm(0)

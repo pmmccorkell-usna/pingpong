@@ -55,9 +55,9 @@ def pid(dt,error):
 
 # Create a list of the controller functions.
 controller_list = {
-	'p_func':p,
-	'pi_func':pi,
-	'pid_func':pid
+	'p':p,
+	'pi':pi,
+	'pid':pid
 }
 
 
@@ -65,7 +65,7 @@ def controller(pingpong_lab,v_target = 1.0,time_limit = 10):
 	global i_term,last_error
 
 	# Assign the controller function being used.
-	active_controller = controller_list.get(active_loop_func,p_func)
+	active_controller = controller_list.get(active_loop_func,p)
 
 	# Zero out memory terms for I and D.
 	i_term = 0

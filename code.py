@@ -52,8 +52,9 @@ if __name__ == '__main__':
 		controller(lab,v_target=1)
 		sleep(2)
 		controller(lab,v_target=2)
-		sleep(2)
-		lab.play_random_music()
+		sleep(1)
+		# lab.play_random_music()
+		sleep(1)
 	# lab.tsd_profile_characteristics()
 	# lab.play_random_music(-1,600,0.5)
 
